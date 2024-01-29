@@ -9,8 +9,13 @@ module.exports = (sequelize, DataTypes) => {
   {
     timestamps: false,
     underscored: true,
+    tableName: 'patients',
   },
 );
+
+Patient.associate = (models) => {
+  Patient.belongsTo(models.Plan, { foreignKey: 'planId', as: 'plan' });
+};
 
   return Patient;
 };

@@ -1,30 +1,39 @@
+// src/models/PatientSurgery.js
+
 module.exports = (sequelize, DataTypes) => {
   const PatientSurgery = sequelize.define(
     'PatientSurgery',
     {
-      patientId: { type: DataTypes.INTEGER, primaryKey: true, field: 'patient_id' },
-      surgeryId: { type: DataTypes.INTEGER, primaryKey: true, field: 'surgery_id' },
+      patientId: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+      },
+      surgeryId: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+      }
     },
-    {
-      timestamps: false,
-      underscored: true,
-      tableName: 'Patient_surgeries'
-    },
+    { 
+        timestamps: false, 
+        underscored:true,
+        tableName: 'patient_surgeries',
+     }
   );
 
   PatientSurgery.associate = (models) => {
-    models.Patient.belongsToMany(models.Surgery, {
-      as: 'surgeries',
-      through: PatientSurgery,
-      foreignKey: 'patientId',
-      otherKey: 'surgeryId',
-    });
     models.Surgery.belongsToMany(models.Patient, {
       as: 'patients',
       through: PatientSurgery,
       foreignKey: 'surgeryId',
       otherKey: 'patientId',
     });
-  }
+    models.Patient.belongsToMany(models.Surgery, {
+      as: 'surgeries',
+      through: PatientSurgery,
+      foreignKey: 'patientId',
+      otherKey: 'surgeryId',
+    });
+  };
+
   return PatientSurgery;
 };
